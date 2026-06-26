@@ -53,7 +53,7 @@ export const SecondaryNav = () => {
           Hidden on md+ screens
          ══════════════════════════════════════════════════════════ */}
       <div
-        className="md:hidden"
+        className="flex md:hidden"
         style={{
           position: 'fixed',
           top: 0,
@@ -66,7 +66,6 @@ export const SecondaryNav = () => {
           borderBottom: '1px solid rgba(255,255,255,0.12)',
           boxShadow: '0 2px 16px rgba(0,0,0,0.4)',
           height: '52px',
-          display: 'flex',
           alignItems: 'center',
           paddingLeft: '1rem',
           paddingRight: '1rem',
