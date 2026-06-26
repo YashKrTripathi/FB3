@@ -1,0 +1,551 @@
+/* ============================================================
+   TATVA — Mobile-First Stylesheet  (320px → 767px)
+   Strategy:
+     • Card grids → horizontal snap-scroll rows (one card visible, swipe for next)
+     • Section padding → 2rem top/bottom
+     • Marquee → explicitly un-broken (no overflow/flex conflict)
+     • Pricing → horizontal snap-scroll cards
+   ============================================================ */
+
+/* ─────────────────────────────────────────────────────────────
+   0. GLOBAL RESETS
+   ───────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-overflow-scrolling: touch;
+  /* offset for the fixed mobile hamburger bar */
+  scroll-padding-top: 60px;
+}
+
+body {
+  overflow-x: hidden;
+  min-width: 320px;
+}
+
+/* Scrollbar hidden utility */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ─────────────────────────────────────────────────────────────
+   1. HERO  — mobile: GIF background, compact height
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .tatva-hero {
+    min-height: 0 !important;
+    height: min(88svh, 520px);
+    display: flex;
+    align-items: center;
+    /* Push content down past the fixed 52px nav bar */
+    padding-top: 52px;
+  }
+
+  .tatva-hero h1 {
+    font-size: clamp(1.5rem, 6.5vw, 2.25rem) !important;
+    line-height: 1.15 !important;
+  }
+
+  .tatva-hero .mb-5 { margin-bottom: 1rem !important; }
+  .tatva-hero .mt-7 { margin-top: 1.25rem !important; }
+}
+
+/* Desktop: video object-cover */
+@media (min-width: 768px) {
+  .hero-video { object-fit: cover; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   2. GLOBAL SECTION SPACING
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  /* Tight padding so every section fits in ~one viewport height */
+  section {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+
+  section h2 {
+    font-size: clamp(1.1rem, 4.5vw, 1.5rem) !important;
+    line-height: 1.2 !important;
+    margin-bottom: 1.25rem !important;
+  }
+
+  /* Reduce all large bottom-margins on heading blocks */
+  .mb-20 { margin-bottom: 1.25rem !important; }
+  .mb-16 { margin-bottom: 1rem !important; }
+  .mb-32 { margin-bottom: 1.5rem !important; }
+
+  /* Container padding */
+  .container {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   3. MARQUEE — explicit fix for mobile clipping
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  section.bg-white.border-b {
+    overflow: hidden !important;
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+  }
+
+  /* Outer container row */
+  section.bg-white.border-b > div.container {
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 0.5rem !important;
+    padding-left: 0.875rem !important;
+    padding-right: 0.875rem !important;
+    align-items: center !important;
+  }
+
+  /* "Trusted by" label */
+  section.bg-white.border-b > div.container > div:first-child {
+    font-size: 0.6rem !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    min-width: 0 !important;
+    line-height: 1.3 !important;
+    /* ensure it stacks above marquee if there is any overlap */
+    position: relative !important;
+    z-index: 10 !important;
+  }
+
+  /* The marquee scroll container: must NOT shrink */
+  section.bg-white.border-b > div.container > div:nth-child(2) {
+    flex: 1 !important;
+    overflow: hidden !important;
+    min-width: 0 !important;
+    /* Narrow the fade mask so logos don't disappear */
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent) !important;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent) !important;
+  }
+
+  /* The ACTUAL marquee strip — MUST be max-content, never collapse */
+  .animate-marquee-half {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    flex-shrink: 0 !important;
+    min-width: max-content !important;
+    width: max-content !important;
+  }
+
+  /* Each logo item */
+  .animate-marquee-half > div {
+    flex-shrink: 0 !important;
+    margin-left: 1rem !important;
+    margin-right: 1rem !important;
+  }
+
+  /* Logo text */
+  .animate-marquee-half span {
+    font-size: 0.75rem !important;
+    white-space: nowrap !important;
+  }
+
+  /* Pause button */
+  section.bg-white.border-b button {
+    flex-shrink: 0 !important;
+  }
+  section.bg-white.border-b button svg {
+    width: 1rem !important;
+    height: 1rem !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   4. PLATFORM FEATURES — Accordion stays vertical (it's already compact)
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  #platform-features {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+
+  /* Accordion item */
+  #platform-features [class*="rounded-2xl"] {
+    border-radius: 0.75rem !important;
+  }
+
+  #platform-features button[aria-expanded] {
+    padding: 0.875rem 0.875rem !important;
+    min-height: 3.25rem;
+  }
+
+  #platform-features button[aria-expanded] span.font-mono {
+    font-size: 0.7rem !important;
+  }
+
+  /* Icon box */
+  #platform-features button[aria-expanded] > div > div:first-child {
+    width: 1.875rem !important;
+    height: 1.875rem !important;
+    padding: 0.3rem !important;
+    border-radius: 0.4rem !important;
+  }
+
+  /* Body area */
+  #platform-features div.p-6 {
+    padding: 0.75rem 0.875rem 0.875rem !important;
+  }
+
+  #platform-features .grid.grid-cols-3 {
+    gap: 0.375rem !important;
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.375rem !important;
+  }
+
+  #platform-features p.text-sm {
+    font-size: 0.75rem !important;
+    line-height: 1.55;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   5. CLINICAL WORKFLOWS — horizontal snap-scroll
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  #clinical-workflows {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+
+  /* Turn the grid into a flex horizontal scroll rail */
+  #clinical-workflows .grid {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch;
+    gap: 0.875rem !important;
+    padding-bottom: 0.75rem; /* space for scrollbar on some devices */
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-left: -1rem;
+    margin-right: -1rem;
+    /* Hide scrollbar */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  #clinical-workflows .grid::-webkit-scrollbar { display: none; }
+
+  /* Each card: fixed width, snap into place */
+  #clinical-workflows .grid > div {
+    flex: 0 0 82vw !important;
+    max-width: 300px !important;
+    scroll-snap-align: start;
+    padding: 1.125rem !important;
+    border-radius: 1rem !important;
+    /* No transform on hover on mobile */
+    transform: none !important;
+  }
+
+  #clinical-workflows .text-4xl { font-size: 1.75rem !important; }
+  #clinical-workflows h3 { font-size: 0.875rem !important; }
+  #clinical-workflows p.text-sm { font-size: 0.75rem !important; line-height: 1.55; }
+  #clinical-workflows div.mt-8 { margin-top: 0.75rem !important; padding-top: 0.5rem !important; }
+  #clinical-workflows div.w-12.h-12 { width: 2rem !important; height: 2rem !important; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   6. PRICING — horizontal snap-scroll cards
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  #pricing {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+
+  /* Dark wrapper card: less padding */
+  #pricing .bg-dark-surface.rounded-3xl {
+    padding: 1rem !important;
+    border-radius: 1.125rem !important;
+  }
+
+  /* Controls: stack currency + billing toggles vertically */
+  #pricing [role="toolbar"] {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.625rem !important;
+    margin-bottom: 1.125rem !important;
+  }
+
+  #pricing .pricing-toggle-track {
+    width: 100% !important;
+  }
+  #pricing .pricing-toggle-btn {
+    flex: 1 !important;
+    text-align: center !important;
+    padding: 0.5rem 0.25rem !important;
+    font-size: 0.75rem !important;
+    min-height: 2.5rem !important;
+  }
+
+  /* Plans grid → horizontal snap-scroll */
+  #pricing .grid.grid-cols-1 {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch;
+    gap: 0.875rem !important;
+    padding-bottom: 0.5rem;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  #pricing .grid.grid-cols-1::-webkit-scrollbar { display: none; }
+
+  /* Each plan card */
+  #pricing article {
+    flex: 0 0 78vw !important;
+    max-width: 280px !important;
+    scroll-snap-align: start;
+    padding: 1.25rem !important;
+    border-radius: 0.875rem !important;
+    transform: none !important;
+  }
+
+  #pricing h3 { font-size: 1.125rem !important; }
+  #pricing .price-value { font-size: 2.5rem !important; line-height: 1 !important; }
+  #pricing .text-3xl.font-bold { font-size: 1.25rem !important; }
+  #pricing div.my-8.h-16 { margin-top: 0.75rem !important; margin-bottom: 0.75rem !important; height: auto !important; }
+  #pricing ul.space-y-5 li { gap: 0.5rem !important; }
+  #pricing ul.space-y-5 span { font-size: 0.8125rem !important; }
+  #pricing ul.space-y-5 svg { width: 1rem !important; height: 1rem !important; }
+  #pricing article > button { height: 2.75rem !important; font-size: 0.7rem !important; }
+  #pricing .mb-12 { margin-bottom: 1rem !important; }
+
+  /* Hide ambient glow on mobile */
+  #pricing div.absolute.top-0.right-0.rounded-full {
+    display: none !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   7. SUCCESS STORIES — metrics 2×2, testimonials horizontal scroll
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  #success-stories {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+
+  /* Metrics: 2-column fixed grid (all 4 visible at once) */
+  #success-stories .grid.lg\:grid-cols-4 {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.75rem !important;
+  }
+
+  #success-stories .grid.lg\:grid-cols-4 > div {
+    padding: 1rem 0.875rem !important;
+    border-radius: 0.875rem !important;
+  }
+
+  #success-stories .text-5xl.font-extrabold {
+    font-size: 1.625rem !important;
+    margin-top: 0.125rem !important;
+    margin-bottom: 0.25rem !important;
+  }
+
+  #success-stories .w-8.h-\[2px\] {
+    margin-bottom: 0.5rem !important;
+  }
+
+  #success-stories .text-xs.font-mono.font-bold {
+    font-size: 0.55rem !important;
+    letter-spacing: 0.04em !important;
+    line-height: 1.35 !important;
+  }
+
+  /* Testimonials → horizontal snap-scroll */
+  #success-stories .grid.md\:grid-cols-3 {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch;
+    gap: 0.875rem !important;
+    padding-bottom: 0.5rem;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  #success-stories .grid.md\:grid-cols-3::-webkit-scrollbar { display: none; }
+
+  #success-stories .grid.md\:grid-cols-3 > div {
+    flex: 0 0 82vw !important;
+    max-width: 300px !important;
+    scroll-snap-align: start;
+    padding: 1.125rem !important;
+    border-radius: 0.875rem !important;
+    transform: none !important;
+  }
+
+  #success-stories blockquote {
+    font-size: 0.8125rem !important;
+    margin-bottom: 0.875rem !important;
+    line-height: 1.55 !important;
+  }
+
+  #success-stories svg.w-10.h-10 { width: 1.75rem !important; height: 1.75rem !important; }
+
+  #success-stories .border-t.pt-6 { padding-top: 0.75rem !important; }
+  #success-stories .w-12.h-12.rounded-full {
+    width: 2rem !important; height: 2rem !important; font-size: 0.7rem !important;
+  }
+  #success-stories cite { font-size: 0.8125rem !important; }
+  #success-stories .text-xs.text-dark-surface\/60 { font-size: 0.6rem !important; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   8. COMPLIANCE — horizontal snap-scroll
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  #compliance {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+
+  /* Hide decorative glows */
+  #compliance > div.absolute { display: none !important; }
+
+  /* Grid → horizontal scroll */
+  #compliance .grid {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch;
+    gap: 0.875rem !important;
+    padding-bottom: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-left: -1rem;
+    margin-right: -1rem;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  #compliance .grid::-webkit-scrollbar { display: none; }
+
+  #compliance .grid > div {
+    flex: 0 0 78vw !important;
+    max-width: 280px !important;
+    scroll-snap-align: start;
+    padding: 1.125rem !important;
+    border-radius: 0.875rem !important;
+    transform: none !important;
+  }
+
+  #compliance h3.text-xl { font-size: 0.9375rem !important; margin-bottom: 0.375rem !important; }
+  #compliance p.text-sm { font-size: 0.75rem !important; margin-bottom: 0.625rem !important; line-height: 1.55 !important; }
+  #compliance .w-12.h-12.rounded-xl { width: 2.25rem !important; height: 2.25rem !important; }
+  #compliance .pt-4.border-t { padding-top: 0.625rem !important; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   9. FOOTER
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  footer {
+    padding-top: 1.5rem !important;
+    padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px)) !important;
+    text-align: center;
+  }
+
+  footer .container {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+  }
+
+  footer p { font-size: 0.75rem !important; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   10. PREVENT OVERFLOW
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  body { overflow-x: hidden; }
+
+  /* Snap-scroll rail children get min-width:0 so they can shrink properly */
+  #clinical-workflows .grid > div,
+  #compliance .grid > div,
+  #pricing .grid.grid-cols-1 > article,
+  #success-stories .grid.md\:grid-cols-3 > div {
+    flex-shrink: 0; /* must NOT shrink — these are fixed-width snap cards */
+  }
+
+  /* Marquee: always max-content, never collapse */
+  .animate-marquee-half {
+    min-width: max-content !important;
+    width: max-content !important;
+    flex-shrink: 0 !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   11. SWIPE HINT — subtle "scroll" indicator on snap rows
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  /* A subtle fade-right gradient after the last card to hint at more content */
+  .mobile-scroll-hint {
+    position: relative;
+  }
+  .mobile-scroll-hint::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0.75rem; /* above scrollbar */
+    width: 3rem;
+    background: linear-gradient(to right, transparent, rgba(241,246,244,0.9));
+    pointer-events: none;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   12. TABLET (768–1023px) — 2-col grids, no snap-scroll
+   ───────────────────────────────────────────────────────────── */
+@media (min-width: 768px) and (max-width: 1023px) {
+  #pricing .grid.lg\:grid-cols-3 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  #pricing article.lg\:scale-105 { transform: none !important; }
+
+  #compliance .grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  #success-stories .grid.md\:grid-cols-3 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   13. LANDSCAPE PHONE
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 767px) and (orientation: landscape) {
+  .tatva-hero { height: min(100svh, 360px) !important; }
+  .tatva-hero h1 { font-size: 1.375rem !important; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   14. PRINT
+   ───────────────────────────────────────────────────────────── */
+@media print {
+  nav, video, #loader, button { display: none !important; }
+  section { page-break-inside: avoid; }
+}
